@@ -10,6 +10,7 @@ import {
 } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { FIELDS, EMPTY_FORM } from "../lib/fields";
+import { useAuth } from "../hooks/useAuth";
 
 export function Field({ field, value, onChange }) {
   return (
@@ -64,6 +65,7 @@ export default function ApartmentForm({
   onDelete = null,
   addRating = null,
 }) {
+  const { profile } = useAuth();
   const [form, setForm] = useState(presetData ?? EMPTY_FORM);
   const [ratings, setRatings] = useState(
     Object.fromEntries(presetRatings.map((r) => [r.user_id, r.rating])),
@@ -72,7 +74,11 @@ export default function ApartmentForm({
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm(presetData ?? EMPTY_FORM);
-    setRatings(Object.fromEntries((presetRatings ?? []).map((r) => [r.user_id, r.rating])));
+    setRatings(
+      Object.fromEntries(
+        (presetRatings ?? []).map((r) => [r.user_id, r.rating]),
+      ),
+    );
   }, [presetData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function setField(key, value) {
@@ -111,16 +117,18 @@ export default function ApartmentForm({
 
         {form.toured !== "no" &&
           typeof addRating === "function" &&
-          users.map((user) => (
-            <RatingFields
-              key={user.user_id}
-              user={user}
-              value={ratings[user.user_id] ?? ""}
-              onChange={(v) =>
-                setRatings((prev) => ({ ...prev, [user.user_id]: v }))
-              }
-            />
-          ))}
+          users
+            .filter((user) => user.user_id === profile.user_id)
+            .map((user) => (
+              <RatingFields
+                key={user.user_id}
+                user={user}
+                value={ratings[user.user_id] ?? ""}
+                onChange={(v) =>
+                  setRatings((prev) => ({ ...prev, [user.user_id]: v }))
+                }
+              />
+            ))}
 
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="secondary" onClick={() => setOpen(false)}>

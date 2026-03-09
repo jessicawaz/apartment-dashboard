@@ -19,8 +19,9 @@ export default function ApartmentList({ apartments, onSave, users }) {
   async function handleUpdate(form) {
     const { error } = await supabase
       .from("apartments")
-      .insert([toDbValues(form, profile.group_id)])
+      .update(toDbValues(form, profile.group_id))
       .eq("apartment_id", editApt.apartment_id);
+
     if (!error) {
       setEditApt(null);
       onSave?.();
@@ -50,7 +51,7 @@ export default function ApartmentList({ apartments, onSave, users }) {
       onSave?.();
     }
   }
-  
+
   return (
     <div className="rounded-xl overflow-x-auto border border-gray-200 shadow-sm">
       <Table>
