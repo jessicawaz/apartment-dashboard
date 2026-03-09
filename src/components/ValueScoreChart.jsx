@@ -10,11 +10,12 @@ export default function ValueScoreChart({ apartmentsWithScores }) {
       "$/min": parseFloat((a.price1bd / a.commute).toFixed(1)),
     }))
     .sort((a, b) => a["$/min"] - b["$/min"]);
-    
+
   return (
     <Card>
       <Title>Value Score — Price per Commute Minute (lower = better)</Title>
       <BarChart
+        style={{ width: "100%", minHeight: 300 }}
         className="mt-4 h-96"
         data={data}
         index="name"

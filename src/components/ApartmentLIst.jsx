@@ -10,14 +10,16 @@ import { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { toDbValues, fromDbValues } from "../lib/fields";
 import ApartmentForm from "./ApartmentForm";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ApartmentList({ apartments, onSave, users }) {
+  const { profile } = useAuth();
   const [editApt, setEditApt] = useState(null);
 
   async function handleUpdate(form) {
     const { error } = await supabase
       .from("apartments")
-      .update(toDbValues(form))
+      .insert([toDbValues(form, profile.group_id)])
       .eq("apartment_id", editApt.apartment_id);
     if (!error) {
       setEditApt(null);
@@ -38,7 +40,7 @@ export default function ApartmentList({ apartments, onSave, users }) {
 
   async function handleRating(ratingsMap) {
     const upserts = Object.entries(ratingsMap)?.map(([userId, rating]) => ({
-      user_id: parseInt(userId),
+      user_id: userId,
       apartment_id: editApt.apartment_id,
       rating,
     }));
@@ -48,7 +50,7 @@ export default function ApartmentList({ apartments, onSave, users }) {
       onSave?.();
     }
   }
-
+  
   return (
     <div className="rounded-xl overflow-x-auto border border-gray-200 shadow-sm">
       <Table>
@@ -65,7 +67,9 @@ export default function ApartmentList({ apartments, onSave, users }) {
             <TableHeaderCell>Garage</TableHeaderCell>
             <TableHeaderCell>Balcony</TableHeaderCell>
             <TableHeaderCell>Toured</TableHeaderCell>
-            <TableHeaderCell className="max-w-xs truncate">Notes</TableHeaderCell>
+            <TableHeaderCell className="max-w-xs truncate">
+              Notes
+            </TableHeaderCell>
             <TableHeaderCell>Date Added</TableHeaderCell>
           </TableRow>
         </TableHead>
@@ -93,7 +97,9 @@ export default function ApartmentList({ apartments, onSave, users }) {
               <TableCell>{apt.garage ? "Yes" : "No"}</TableCell>
               <TableCell>{apt.balcony ? "Yes" : "No"}</TableCell>
               <TableCell>{apt.toured ? "Yes" : "No"}</TableCell>
-              <TableCell className="max-w-xs truncate">{apt.notes ?? "—"}</TableCell>
+              <TableCell className="max-w-xs truncate">
+                {apt.notes ?? "—"}
+              </TableCell>
               <TableCell>
                 {apt.created_at ? new Date(apt.created_at).toDateString() : "—"}
               </TableCell>

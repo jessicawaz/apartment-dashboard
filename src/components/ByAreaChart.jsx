@@ -38,7 +38,7 @@ export default function ByAreaChart({ bedFilter, apartmentsWithScores }) {
     .sort((a, b) => a["Avg 2bd Rent"] - b["Avg 2bd Rent"]);
 
   return (
-    <>
+    <div style={{ width: "100%", minHeight: 300 }}>
       {bedFilter === "1bd" && (
         <Card>
           <Title>Avg 1bd Rent by Neighborhood</Title>
@@ -72,6 +72,6 @@ export default function ByAreaChart({ bedFilter, apartmentsWithScores }) {
           />
         </Card>
       )}
-    </>
+    </div>
   );
 }

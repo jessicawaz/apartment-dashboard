@@ -13,27 +13,25 @@ export default function PriceChart({ bedFilter, apartmentsWithScores }) {
     .map((a) => ({ name: a.name, "2bd/2ba": a.price2bd }));
 
   return (
-    <>
-      <div className="space-y-6">
-        {bedFilter === "1bd" && (
-          <PricePanel
-            title="1bd/1ba — Monthly Rent"
-            data={data1bd}
-            category="1bd/1ba"
-            color="teal"
-          />
-        )}
+    <div className="space-y-6" style={{ width: "100%", minHeight: 300 }}>
+      {bedFilter === "1bd" && (
+        <PricePanel
+          title="1bd/1ba — Monthly Rent"
+          data={data1bd}
+          category="1bd/1ba"
+          color="teal"
+        />
+      )}
 
-        {bedFilter === "2bd" && (
-          <PricePanel
-            title="2bd/2ba — Monthly Rent"
-            data={data2bd}
-            category="2bd/2ba"
-            color="indigo"
-          />
-        )}
-      </div>
-    </>
+      {bedFilter === "2bd" && (
+        <PricePanel
+          title="2bd/2ba — Monthly Rent"
+          data={data2bd}
+          category="2bd/2ba"
+          color="indigo"
+        />
+      )}
+    </div>
   );
 }
 

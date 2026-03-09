@@ -37,7 +37,7 @@ export const EMPTY_FORM = {
   notes: "",
 };
 
-export function toDbValues(form) {
+export function toDbValues(form, groupId) {
   return {
     name: form.name,
     city: form.city,
@@ -49,6 +49,7 @@ export function toDbValues(form) {
       form.balcony === "yes" ? true : form.balcony === "no" ? false : null,
     toured: form.toured === "yes",
     notes: form.notes || null,
+    group_id: groupId,
   };
 }
 

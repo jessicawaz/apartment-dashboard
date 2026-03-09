@@ -50,13 +50,20 @@ export function computeStats(apartments) {
 }
 
 export async function addUserRatings(apartments) {
-  const { data, error } = await supabase.from("user_ratings").select("*");
+  const { data, error } = await supabase
+    .from("user_ratings")
+    .select("*")
+    .in(
+      "apartment_id",
+      apartments.map((apt) => apt.apartment_id),
+    );
+
   if (error) {
     return apartments;
   }
 
   return apartments.map((apt) => ({
     ...apt,
-    ratings: data.filter((rating) => rating.apartment_id === apt.apartment_id),
+    ratings: data.filter((r) => r.apartment_id === apt.apartment_id),
   }));
 }
