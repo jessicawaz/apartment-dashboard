@@ -24,40 +24,32 @@ export default function AmenitiesTable({ apartmentsWithScores }) {
     <Card>
       <Title>Amenities & Status</Title>
       <div className="overflow-x-auto">
-      <Table className="mt-4">
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Apartment</TableHeaderCell>
-            <TableHeaderCell>Commute</TableHeaderCell>
-            <TableHeaderCell>Garage</TableHeaderCell>
-            <TableHeaderCell>Screened Balcony</TableHeaderCell>
-            <TableHeaderCell>Toured</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sorted.map((a) => (
-            <TableRow key={a.name}>
-              <TableCell className="font-medium">{a.name}</TableCell>
-              <TableCell>
-                {a.commute != null ? `${a.commute} min` : "—"}
-              </TableCell>
-              <TableCell>
-                <YesNo value={a.garage} />
-              </TableCell>
-              <TableCell>
-                <YesNo value={a.balcony} />
-              </TableCell>
-              <TableCell>
-                {a.toured ? (
-                  <Badge color="purple">Toured</Badge>
-                ) : (
-                  <Badge color="gray">Not yet</Badge>
-                )}
-              </TableCell>
+        <Table className="mt-4">
+          <TableHead>
+            <TableRow>
+              <TableHeaderCell>Apartment</TableHeaderCell>
+              <TableHeaderCell>Commute</TableHeaderCell>
+              <TableHeaderCell>Garage</TableHeaderCell>
+              <TableHeaderCell>Screened Balcony</TableHeaderCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {sorted.map((a) => (
+              <TableRow key={a.name}>
+                <TableCell className="font-medium">{a.name}</TableCell>
+                <TableCell>
+                  {a.commute != null ? `${a.commute} min` : "—"}
+                </TableCell>
+                <TableCell>
+                  <YesNo value={a.garage} />
+                </TableCell>
+                <TableCell>
+                  <YesNo value={a.balcony} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </Card>
   );

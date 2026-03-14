@@ -11,10 +11,8 @@ import {
 } from "@tremor/react";
 import { useState, useEffect, useCallback, useMemo } from "react";
 
-import PriceChart from "./PriceChart";
 import PricePerCommute from "./PricePerCommute";
 import AmenitiesTable from "./AmenitiesTable";
-import RankingChart from "./RankingChart";
 import UserRankings from "./UserRankings";
 import MapView from "./MapView";
 import InviteCode from "./InviteCode";
@@ -126,13 +124,13 @@ export function Dashboard() {
           <div className="overflow-x-auto -mx-4 px-4">
             <TabList className="mb-4 mt-4 w-max min-w-full">
               <Tab>Map</Tab>
-              <Tab>Prices</Tab>
+              <Tab>Neighborhoods</Tab>
               <Tab>List</Tab>
               <Tab>Ratings</Tab>
               <Tab>Commute & Value</Tab>
               <Tab>Amenities</Tab>
-              <Tab>Compare</Tab>
               <Tab>Decision Matrix</Tab>
+              <Tab>Compare</Tab>
             </TabList>
           </div>
 
@@ -143,7 +141,6 @@ export function Dashboard() {
 
             <TabPanel>
               <div className="space-y-6">
-                <PriceChart apartmentsWithScores={apartmentsWithScores} />
                 <NeighborhoodTable
                   apartmentsWithScores={apartmentsWithScores}
                 />
@@ -172,19 +169,15 @@ export function Dashboard() {
               <AmenitiesTable apartmentsWithScores={apartmentsWithScores} />
             </TabPanel>
 
-            {/* <TabPanel>
-              <RankingChart apartmentsWithScores={apartmentsWithScores} />
-            </TabPanel> */}
+            <TabPanel>
+              <DecisionMatrix apartmentsWithRatings={apartmentsWithRatings} />
+            </TabPanel>
 
             <TabPanel>
               <HeadToHead
                 apartmentsWithRatings={apartmentsWithRatings}
                 profile={profile}
               />
-            </TabPanel>
-
-            <TabPanel>
-              <DecisionMatrix apartmentsWithRatings={apartmentsWithRatings} />
             </TabPanel>
           </TabPanels>
         </TabGroup>

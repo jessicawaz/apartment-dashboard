@@ -8,7 +8,7 @@ import {
 } from "@tremor/react";
 import { useState } from "react";
 
-export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
+export default function DecisionMatrix({ apartmentsWithRatings }) {
   const [sortKey, setSortKey] = useState("score");
   const [sortAsc, setSortAsc] = useState(false);
 
@@ -25,7 +25,8 @@ export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
   };
 
   const getColor = (value, allValues, lowerIsBetter) => {
-    const sortedValues = allValues.sort((a, b) => {
+    // Spread allValues to new array to avoid mutation
+    const sortedValues = [...allValues].sort((a, b) => {
       if (lowerIsBetter) {
         return a - b;
       } else {
@@ -44,15 +45,18 @@ export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
         return "bg-red-100 text-red-800";
       }
     } else {
-      if (rank >= 0.67) {
+      if (rank >= 0.66) {
         return "bg-green-100 text-green-800";
-      } else if (rank >= 0.34) {
+      } else if (rank >= 0.33) {
         return "bg-yellow-100 text-yellow-800";
       } else {
         return "bg-red-100 text-red-800";
       }
     }
   };
+
+  const getBoolColor = (val) =>
+    val ? "bg-green-100 text-green-800" : "text-gray-400";
 
   const handleSort = (key) => {
     if (sortKey === key) {
@@ -61,7 +65,6 @@ export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
       setSortKey(key);
       setSortAsc(true);
     }
-    return;
   };
 
   const sorted = [...apartmentsWithRatings].sort((a, b) => {
@@ -79,25 +82,20 @@ export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
     }
 
     if (typeof valA === "boolean") {
+      const boolVal = (v) => (v ? 1 : -1);
       return sortAsc
-        ? valA === valB
-          ? 0
-          : valA
-            ? -1
-            : 1
-        : valA === valB
-          ? 0
-          : valA
-            ? 1
-            : -1;
+        ? boolVal(valA) - boolVal(valB)
+        : boolVal(valB) - boolVal(valA);
     }
 
     valA = valA ?? (sortAsc ? Infinity : -Infinity);
     valB = valB ?? (sortAsc ? Infinity : -Infinity);
+
     return sortAsc ? valA - valB : valB - valA;
   });
 
   const all1bdPrices = apartmentsWithRatings.map((a) => a.price1bd);
+  const all2bdPrices = apartmentsWithRatings.map((a) => a.price2bd);
   const allCommutes = apartmentsWithRatings.map((a) => a.commute);
   const allRatings = apartmentsWithRatings.map((a) => avgRating(a));
   const allScores = apartmentsWithRatings.map((a) => a.score);
@@ -139,44 +137,30 @@ export default function DecisionMatrix({ apartmentsWithRatings, onEdit }) {
       <TableBody>
         {sorted.map((apt) => {
           return (
-            <TableRow
-              onClick={() => onEdit(apt)}
-              className="cursor-pointer hover:bg-gray-50"
-              key={apt.apartment_id}
-            >
+            <TableRow key={apt.apartment_id}>
               <TableCell>{apt.name}</TableCell>
               <TableCell className={getColor(apt.price1bd, all1bdPrices, true)}>
                 ${apt.price1bd}
               </TableCell>
-              <TableCell>${apt.price2bd}</TableCell>
+              <TableCell className={getColor(apt.price2bd, all2bdPrices, true)}>
+                ${apt.price2bd}
+              </TableCell>
               <TableCell className={getColor(apt.commute, allCommutes, true)}>
                 {apt.commute} min
               </TableCell>
-              <TableCell
-                className={
-                  apt.garage ? "bg-green-100 text-green-800" : "text-gray-400"
-                }
-              >
+              <TableCell className={getBoolColor(apt.garage)}>
                 {apt.garage ? "Yes" : "No"}
               </TableCell>
-              <TableCell
-                className={
-                  apt.balcony ? "bg-green-100 text-green-800" : "text-gray-400"
-                }
-              >
+              <TableCell className={getBoolColor(apt.balcony)}>
                 {apt.balcony ? "Yes" : "No"}
               </TableCell>
-              <TableCell
-                className={
-                  apt.toured ? "bg-green-100 text-green-800" : "text-gray-400"
-                }
-              >
+              <TableCell className={getBoolColor(apt.toured)}>
                 {apt.toured ? "Yes" : "No"}
               </TableCell>
               <TableCell
                 className={getColor(avgRating(apt), allRatings, false)}
               >
-                {apt.ratings ? avgRating(apt) / 5 : "-"}
+                {avgRating(apt) ? avgRating(apt)?.toFixed(2) / 5 : "-"}
               </TableCell>
               <TableCell className={getColor(apt.score, allScores, false)}>
                 {apt.score?.toFixed(2)}
