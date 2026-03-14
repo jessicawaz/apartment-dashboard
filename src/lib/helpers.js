@@ -17,19 +17,19 @@ export function computeScores(apartments) {
       a.commute != null ? 1 - (a.commute - minC) / (maxC - minC) : 0;
     const garageScore = a.garage === true ? 1 : a.garage === null ? 0.5 : 0;
     const balconyScore = a.balcony === true ? 1 : 0;
-    const composite =
+    const score =
       priceScore * 0.4 +
       commuteScore * 0.35 +
       garageScore * 0.125 +
       balconyScore * 0.125;
-    const tier = composite >= 0.67 ? "top" : composite >= 0.33 ? "mid" : "low";
+    const tier = score >= 0.67 ? "top" : score >= 0.33 ? "mid" : "low";
     return {
       ...a,
       priceScore,
       commuteScore,
       garageScore,
       balconyScore,
-      composite,
+      score,
       tier,
     };
   });

@@ -64,10 +64,6 @@ export default function ApartmentList({ apartments, onSave, users }) {
             ))}
             <TableHeaderCell>1bd Price</TableHeaderCell>
             <TableHeaderCell>2bd Price</TableHeaderCell>
-            <TableHeaderCell>Commute (min)</TableHeaderCell>
-            <TableHeaderCell>Garage</TableHeaderCell>
-            <TableHeaderCell>Balcony</TableHeaderCell>
-            <TableHeaderCell>Toured</TableHeaderCell>
             <TableHeaderCell className="max-w-xs truncate">
               Notes
             </TableHeaderCell>
@@ -94,10 +90,6 @@ export default function ApartmentList({ apartments, onSave, users }) {
               <TableCell>
                 {apt.price2bd ? `$${apt.price2bd.toLocaleString()}` : "—"}
               </TableCell>
-              <TableCell>{apt.commute ?? "—"}</TableCell>
-              <TableCell>{apt.garage ? "Yes" : "No"}</TableCell>
-              <TableCell>{apt.balcony ? "Yes" : "No"}</TableCell>
-              <TableCell>{apt.toured ? "Yes" : "No"}</TableCell>
               <TableCell className="max-w-xs truncate">
                 {apt.notes ?? "—"}
               </TableCell>

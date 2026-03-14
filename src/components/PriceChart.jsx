@@ -2,7 +2,7 @@ import { Card, Title, BarChart } from "@tremor/react";
 
 const valueFormatter = (v) => `$${v.toLocaleString()}`;
 
-export default function PriceChart({ bedFilter, apartmentsWithScores }) {
+export default function PriceChart({ apartmentsWithScores }) {
   const data1bd = [...apartmentsWithScores]
     .sort((a, b) => a.price1bd - b.price1bd)
     .map((a) => ({ name: a.name, "1bd/1ba": a.price1bd }));
@@ -14,23 +14,19 @@ export default function PriceChart({ bedFilter, apartmentsWithScores }) {
 
   return (
     <div className="space-y-6" style={{ width: "100%", minHeight: 300 }}>
-      {bedFilter === "1bd" && (
-        <PricePanel
-          title="1bd/1ba — Monthly Rent"
-          data={data1bd}
-          category="1bd/1ba"
-          color="teal"
-        />
-      )}
+      <PricePanel
+        title="1bd/1ba — Monthly Rent"
+        data={data1bd}
+        category="1bd/1ba"
+        color="teal"
+      />
 
-      {bedFilter === "2bd" && (
-        <PricePanel
-          title="2bd/2ba — Monthly Rent"
-          data={data2bd}
-          category="2bd/2ba"
-          color="indigo"
-        />
-      )}
+      <PricePanel
+        title="2bd/2ba — Monthly Rent"
+        data={data2bd}
+        category="2bd/2ba"
+        color="indigo"
+      />
     </div>
   );
 }

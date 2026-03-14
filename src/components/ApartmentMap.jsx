@@ -31,7 +31,7 @@ export default function ApartmentMap({ apartmentsWithScores }) {
               1bd: ${a.price1bd.toLocaleString()}/mo<br />
               {a.price2bd && <>2bd: ${a.price2bd.toLocaleString()}/mo<br /></>}
               Commute: {a.commute} min<br />
-              Score: {a.composite?.toFixed(2)}<br />
+              Score: {a.score?.toFixed(2)}<br />
               {a.toured && <><br /><b>✓ Toured</b></>}
             </Popup>
           </CircleMarker>

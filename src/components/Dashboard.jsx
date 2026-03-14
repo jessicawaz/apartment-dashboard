@@ -12,25 +12,24 @@ import {
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 import PriceChart from "./PriceChart";
-import ByAreaChart from "./ByAreaChart";
-import CommuteScatter from "./CommuteScatter";
-import ValueScoreChart from "./ValueScoreChart";
+import PricePerCommute from "./PricePerCommute";
 import AmenitiesTable from "./AmenitiesTable";
 import RankingChart from "./RankingChart";
 import UserRankings from "./UserRankings";
 import MapView from "./MapView";
-import BedFilter from "./BedFilter";
 import InviteCode from "./InviteCode";
 import { supabase } from "../lib/supabase";
 import { addUserRatings, computeScores, computeStats } from "../lib/helpers";
 import AddApartment from "./AddApartment";
-import ApartmentList from "./ApartmentLIst";
-import { TourPlan } from "./TourPlan";
+import ApartmentList from "./ApartmentList";
 import { useAuth } from "../hooks/useAuth";
+import { SignOutPage } from "./auth/SignOutPage";
+import NeighborhoodTable from "./NeighborhoodTable";
+import DecisionMatrix from "./DecisionMatrix";
+import HeadToHead from "./HeadToHead";
 
 export function Dashboard() {
   const { profile } = useAuth();
-  const [bedFilter, setBedFilter] = useState("1bd");
   const [rawApartments, setRawApartments] = useState([]);
   const [apartmentsWithRatings, setApartmentsWithRatings] = useState([]);
   const [users, setUsers] = useState([]);
@@ -59,7 +58,7 @@ export function Dashboard() {
     if (!error) {
       setUsers(data);
     }
-    console.log({data})
+    console.log({ data });
   }, [profile.group_id]);
 
   useEffect(() => {
@@ -96,7 +95,7 @@ export function Dashboard() {
             <InviteCode />
           </div>
 
-          <AddApartment onSave={fetchApartments} />
+          {/* <SignOutPage /> */}
         </div>
 
         {/* Stat cards */}
@@ -120,7 +119,7 @@ export function Dashboard() {
           </Card>
         </Grid>
 
-        <BedFilter bedFilter={bedFilter} setBedFilter={setBedFilter} />
+        <AddApartment onSave={fetchApartments} />
 
         {/* Tabs */}
         <TabGroup>
@@ -132,8 +131,8 @@ export function Dashboard() {
               <Tab>Ratings</Tab>
               <Tab>Commute & Value</Tab>
               <Tab>Amenities</Tab>
-              <Tab>Scores</Tab>
-              <Tab>Tour Plan</Tab>
+              <Tab>Compare</Tab>
+              <Tab>Decision Matrix</Tab>
             </TabList>
           </div>
 
@@ -144,12 +143,8 @@ export function Dashboard() {
 
             <TabPanel>
               <div className="space-y-6">
-                <PriceChart
-                  bedFilter={bedFilter}
-                  apartmentsWithScores={apartmentsWithScores}
-                />
-                <ByAreaChart
-                  bedFilter={bedFilter}
+                <PriceChart apartmentsWithScores={apartmentsWithScores} />
+                <NeighborhoodTable
                   apartmentsWithScores={apartmentsWithScores}
                 />
               </div>
@@ -169,8 +164,7 @@ export function Dashboard() {
 
             <TabPanel>
               <div className="space-y-6">
-                <CommuteScatter apartmentsWithScores={apartmentsWithScores} />
-                <ValueScoreChart apartmentsWithScores={apartmentsWithScores} />
+                <PricePerCommute apartmentsWithScores={apartmentsWithScores} />
               </div>
             </TabPanel>
 
@@ -178,12 +172,19 @@ export function Dashboard() {
               <AmenitiesTable apartmentsWithScores={apartmentsWithScores} />
             </TabPanel>
 
-            <TabPanel>
+            {/* <TabPanel>
               <RankingChart apartmentsWithScores={apartmentsWithScores} />
+            </TabPanel> */}
+
+            <TabPanel>
+              <HeadToHead
+                apartmentsWithRatings={apartmentsWithRatings}
+                profile={profile}
+              />
             </TabPanel>
 
             <TabPanel>
-              <TourPlan apartmentsWithScores={apartmentsWithScores} />
+              <DecisionMatrix apartmentsWithRatings={apartmentsWithRatings} />
             </TabPanel>
           </TabPanels>
         </TabGroup>

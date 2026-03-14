@@ -7,7 +7,7 @@ const TIERS = [
 ];
 
 function RankingPanel({ title, data }) {
-  const sorted = [...data].sort((a, b) => b.composite - a.composite);
+  const sorted = [...data].sort((a, b) => b.score - a.score);
 
   return (
     <Card>
@@ -21,7 +21,7 @@ function RankingPanel({ title, data }) {
             .filter((a) => a.tier === key)
             .map((a) => ({
               name: a.name,
-              Score: parseFloat(a.composite.toFixed(3)),
+              Score: parseFloat(a.score.toFixed(3)),
             }));
           if (!tierData.length) return null;
           return (

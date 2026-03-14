@@ -28,8 +28,6 @@ export default function AmenitiesTable({ apartmentsWithScores }) {
         <TableHead>
           <TableRow>
             <TableHeaderCell>Apartment</TableHeaderCell>
-            <TableHeaderCell>City</TableHeaderCell>
-            <TableHeaderCell>1bd Price</TableHeaderCell>
             <TableHeaderCell>Commute</TableHeaderCell>
             <TableHeaderCell>Garage</TableHeaderCell>
             <TableHeaderCell>Screened Balcony</TableHeaderCell>
@@ -40,8 +38,6 @@ export default function AmenitiesTable({ apartmentsWithScores }) {
           {sorted.map((a) => (
             <TableRow key={a.name}>
               <TableCell className="font-medium">{a.name}</TableCell>
-              <TableCell>{a.city}</TableCell>
-              <TableCell>${a.price1bd?.toLocaleString()}/mo</TableCell>
               <TableCell>
                 {a.commute != null ? `${a.commute} min` : "—"}
               </TableCell>
