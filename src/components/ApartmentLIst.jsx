@@ -60,7 +60,9 @@ export default function ApartmentList({ apartments, onSave, users }) {
             <TableHeaderCell>Name</TableHeaderCell>
             <TableHeaderCell>City</TableHeaderCell>
             {users.map((user) => (
-              <TableHeaderCell>{user.name}'s Rating</TableHeaderCell>
+              <TableHeaderCell key={user.user_id}>
+                {user.name}'s Rating
+              </TableHeaderCell>
             ))}
             <TableHeaderCell>1bd Price</TableHeaderCell>
             <TableHeaderCell>2bd Price</TableHeaderCell>
@@ -73,7 +75,7 @@ export default function ApartmentList({ apartments, onSave, users }) {
         <TableBody>
           {apartments?.map((apt) => (
             <TableRow
-              key={apt.id}
+              key={apt.apartment_id}
               className="cursor-pointer hover:bg-gray-50"
               onClick={() => setEditApt(apt)}
             >
@@ -84,7 +86,11 @@ export default function ApartmentList({ apartments, onSave, users }) {
                   (r) => r.user_id === user.user_id,
                 )?.rating;
 
-                return <TableCell>{rating ? `${rating}/5` : "—"}</TableCell>;
+                return (
+                  <TableCell key={user.user_id}>
+                    {rating ? `${rating}/5` : "—"}
+                  </TableCell>
+                );
               })}
               <TableCell>${apt.price1bd?.toLocaleString()}</TableCell>
               <TableCell>

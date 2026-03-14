@@ -139,16 +139,18 @@ export default function PricePerCommute({ apartmentsWithScores }) {
       </Card>
 
       {filtered.length ? (
-        <BarChart
-          className="mt-4 h-[480px]"
-          data={filtered}
-          index="name"
-          categories={["pricePerCommute"]}
-          colors={["blue"]}
-          layout="vertical"
-          showLegend={false}
-          yAxisWidth={180}
-        />
+        <div style={{ height: "480px" }}>
+          <BarChart
+            className="h-full"
+            data={filtered}
+            index="name"
+            categories={["pricePerCommute"]}
+            colors={["blue"]}
+            layout="vertical"
+            showLegend={false}
+            yAxisWidth={180}
+          />
+        </div>
       ) : (
         <p className="text-gray-500 text-sm text-center py-8">
           No apartments match your filters.

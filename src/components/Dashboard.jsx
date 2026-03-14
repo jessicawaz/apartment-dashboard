@@ -21,7 +21,7 @@ import { addUserRatings, computeScores, computeStats } from "../lib/helpers";
 import AddApartment from "./AddApartment";
 import ApartmentList from "./ApartmentList";
 import { useAuth } from "../hooks/useAuth";
-import { SignOutPage } from "./auth/SignOutPage";
+import { SignOutButton } from "./auth/SignOutButton";
 import NeighborhoodTable from "./NeighborhoodTable";
 import DecisionMatrix from "./DecisionMatrix";
 import HeadToHead from "./HeadToHead";
@@ -56,7 +56,6 @@ export function Dashboard() {
     if (!error) {
       setUsers(data);
     }
-    console.log({ data });
   }, [profile.group_id]);
 
   useEffect(() => {
@@ -93,7 +92,7 @@ export function Dashboard() {
             <InviteCode />
           </div>
 
-          {/* <SignOutPage /> */}
+          <SignOutButton />
         </div>
 
         {/* Stat cards */}

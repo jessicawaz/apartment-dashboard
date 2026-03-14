@@ -31,7 +31,6 @@ function RankingPanel({ title, data }) {
               </p>
               <div style={{ height: `${tierData.length * 56}px` }}>
                 <BarChart
-                  className="h-full"
                   data={tierData}
                   index="name"
                   categories={["Score"]}
@@ -41,6 +40,9 @@ function RankingPanel({ title, data }) {
                   showLegend={false}
                   yAxisWidth={180}
                   maxValue={1}
+                  autoMinValue
+                  barCategoryGap={8}
+                  style={{ height: `${tierData.length * 56}px` }}
                 />
               </div>
             </div>

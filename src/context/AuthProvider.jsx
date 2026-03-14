@@ -35,7 +35,9 @@ export function AuthProvider({ children }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(() => {
-      supabase.auth.getClaims().then(async ({ data: { claims } }) => {
+      supabase.auth.getClaims()?.then(async ({ data }) => {
+        const claims = data?.claims ?? null;
+        
         setClaims(claims);
         if (claims) {
           // Check if profile row exists
