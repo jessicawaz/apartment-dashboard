@@ -102,7 +102,7 @@ export function Dashboard() {
             <Metric>{stats.count}</Metric>
           </Card>
           <Card>
-            <Text>1bd Price Range</Text>
+            <Text>2bd Price Range</Text>
             <Metric className="truncate">
               ${stats.minPrice.toLocaleString()} – $
               {stats.maxPrice.toLocaleString()}

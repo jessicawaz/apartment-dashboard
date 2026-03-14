@@ -36,7 +36,7 @@ export function computeScores(apartments) {
 }
 
 export function computeStats(apartments) {
-  const prices = apartments.map((a) => a.price1bd);
+  const prices = apartments.map((a) => a.price2bd).filter((p) => p != null);
   const commutes = apartments
     .filter((a) => a.commute != null)
     .map((a) => a.commute);
