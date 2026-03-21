@@ -25,34 +25,18 @@ export default function DecisionMatrix({ apartmentsWithRatings }) {
   };
 
   const getColor = (value, allValues, lowerIsBetter) => {
-    // Spread allValues to new array to avoid mutation
-    const sortedValues = [...allValues].sort((a, b) => {
-      if (lowerIsBetter) {
-        return a - b;
-      } else {
-        return b - a;
-      }
-    });
+    const sorted = [...allValues].sort((a, b) =>
+      lowerIsBetter ? a - b : b - a,
+    );
+    const rank = sorted.indexOf(value) / (sorted.length - 1);
 
-    const rank = sortedValues.indexOf(value) / (sortedValues.length - 1);
-
-    if (lowerIsBetter) {
-      if (rank <= 0.33) {
-        return "bg-green-100 text-green-800";
-      } else if (rank <= 0.66) {
-        return "bg-yellow-100 text-yellow-800";
-      } else {
-        return "bg-red-100 text-red-800";
-      }
-    } else {
-      if (rank >= 0.66) {
-        return "bg-green-100 text-green-800";
-      } else if (rank >= 0.33) {
-        return "bg-yellow-100 text-yellow-800";
-      } else {
-        return "bg-red-100 text-red-800";
-      }
+    if (rank <= 0.33) {
+      return "bg-green-100 text-green-800";
     }
+    if (rank <= 0.66) {
+      return "bg-yellow-100 text-yellow-800";
+    }
+    return "bg-red-100 text-red-800";
   };
 
   const getBoolColor = (val) =>

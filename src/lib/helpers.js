@@ -2,23 +2,40 @@ import { supabase } from "./supabase";
 
 export function computeScores(apartments) {
   // Compute composite score: price 40%, commute 35%, garage 12.5%, balcony 12.5%
-  const prices = apartments.map((a) => a.price1bd);
+  const prices1bd = apartments.filter((a) => a.price1bd).map((a) => a.price1bd);
+  const prices2bd = apartments.filter((a) => a.price2bd).map((a) => a.price2bd);
   const commutes = apartments
     .filter((a) => a.commute != null)
     .map((a) => a.commute);
-  const minP = Math.min(...prices),
-    maxP = Math.max(...prices);
+  const minP1bd = Math.min(...prices1bd),
+    maxP1bd = Math.max(...prices1bd);
+  const minP2bd = Math.min(...prices2bd),
+    maxP2bd = Math.max(...prices2bd);
   const minC = Math.min(...commutes),
     maxC = Math.max(...commutes);
 
   return apartments.map((a) => {
-    const priceScore = 1 - (a.price1bd - minP) / (maxP - minP);
+    const price1bdScore =
+      a.price1bd != null && maxP1bd !== minP1bd
+        ? 1 - (a.price1bd - minP1bd) / (maxP1bd - minP1bd)
+        : null;
+
+    const price2bdScore =
+      a.price2bd != null && maxP2bd !== minP2bd
+        ? 1 - (a.price2bd - minP2bd) / (maxP2bd - minP2bd)
+        : null;
+
+    const priceScore =
+      price1bdScore != null && price2bdScore != null
+        ? (price1bdScore + price2bdScore) / 2
+        : (price1bdScore ?? price2bdScore ?? 0);
     const commuteScore =
       a.commute != null ? 1 - (a.commute - minC) / (maxC - minC) : 0;
     const garageScore = a.garage === true ? 1 : a.garage === null ? 0.5 : 0;
     const balconyScore = a.balcony === true ? 1 : 0;
     const score =
       priceScore * 0.4 +
+      price2bdScore * 0.4 +
       commuteScore * 0.35 +
       garageScore * 0.125 +
       balconyScore * 0.125;
